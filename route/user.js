@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get('/me', async (request, response) => {
     const user = await User.findById(request.body._id).select('-password');
-    response.send(user);
+    return response.send(user);
 })
 
 router.post('/', async (request, response) => {
@@ -23,11 +23,11 @@ router.post('/', async (request, response) => {
 const validateUserRequestAndCheckEligiblity = async(userRequest, response) => {
     const { error } = validateUser(userRequest);
     if (error) {
-        response.status(400).send(error.details[0].message);
+        return response.status(400).send(error.details[0].message);
     }
     const existingUser = await User.findOne({email: userRequest.email});
     if (existingUser) {
-        response.status(400).send(`This email: ${userRequest.email} is already registered!.`);
+        return response.status(400).send(`This email: ${userRequest.email} is already registered!.`);
     }
 }
 
@@ -39,7 +39,7 @@ const encryptPassword = async user => {
 const generateAuthTokenAndReturnResponse = (user, response) => {
     const token = user.generateAuthToken();
     console.log(token);
-    response.header('x-auth-token',token)
+    return response.header('x-auth-token',token)
     .header('access-control-expose-headers','x-auth-token')
     .send(_.pick(user, ['_id', 'name', 'email']));
 }
