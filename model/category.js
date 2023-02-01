@@ -10,9 +10,9 @@ const categorySchema = mongoose.Schema({
         max: 200,
         required: true
     }
-}, {collection : constant.categoryCollectionName });
+}, {collection : constant.CATEGORY_COLLECTION_NAME });
 
-const Category = mongoose.model(constant.categoryCollectionName, categorySchema);
+const Category = mongoose.model(constant.CATEGORY_COLLECTION_NAME, categorySchema);
 
 const validateCategory = category => {
     const schema = joi.object({

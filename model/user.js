@@ -25,13 +25,13 @@ const userSchema = new mongoose.Schema({
         maxlength: 250
     },
     isAdmin: Boolean
-},{ collection: constant.userCollectionName });
+},{ collection: constant.USER_COLLECTION_NAME });
 
 userSchema.methods.generateAuthToken = function() {
-    return jwt.sign({_id:this._id, name: this.name, email: this.email, isAdmin : this.isAdmin}, config.get(constant.jwtPrivateKey));
+    return jwt.sign({_id:this._id, name: this.name, email: this.email, isAdmin : this.isAdmin}, config.get(constant.JWT_PRIVATE_KEY));
 }
 
-const User = mongoose.model(constant.userCollectionName, userSchema);
+const User = mongoose.model(constant.USER_COLLECTION_NAME, userSchema);
 
 const validateUser = user => {
     const schema = joi.object({

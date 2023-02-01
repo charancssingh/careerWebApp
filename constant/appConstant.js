@@ -1,13 +1,13 @@
 module.exports = {
-    // table name
+    // Table & Database info
     CONNECTION_STRING: 'connectionString',
-    userCollectionName: 'User',
+    USER_COLLECTION_NAME: 'User',
     JOB_COLLECTION_NAME: 'Job',
-    categoryCollectionName: 'Category',
+    CATEGORY_COLLECTION_NAME: 'Category',
 
-    // config constants
-    jwtPrivateKey: 'jwtPrivateKey',
-    requiresAuth: 'requiresAuth',
-    headerKey: 'x-auth-token',
+    // Config constants
+    JWT_PRIVATE_KEY: 'jwtPrivateKey',
+    REQUIRES_AUTH: 'requiresAuth',
+    HEADER_KEY: 'x-auth-token',
     PORT: 'port'
 }
