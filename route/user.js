@@ -7,8 +7,17 @@ const { User, validateUser } = require('../model/user');
 const router = express.Router();
 
 router.get('/me', async (request, response) => {
-    const user = await User.findById(request.body._id).select('-password');
+    const user = await User.findById(request.user._id).select('-password');
     return response.send(user);
+})
+
+router.post('/login', async (request, response) => {
+    const userRequest = request.body;
+    const user = await User.findOne({email: userRequest.email});
+    if (!user) return response.status(401).send(`Invalid Email Id and password provided!.`);
+    const matchPassword =  await bcrypt.compare(userRequest.password, user.password);
+    if (!matchPassword) return response.status(401).send(`Invalid Email Id and password provided!.`);
+    generateAuthTokenAndReturnResponse(user, response);
 })
 
 router.post('/', async (request, response) => {
@@ -38,7 +47,6 @@ const encryptPassword = async user => {
 
 const generateAuthTokenAndReturnResponse = (user, response) => {
     const token = user.generateAuthToken();
-    console.log(token);
     return response.header('x-auth-token',token)
     .header('access-control-expose-headers','x-auth-token')
     .send(_.pick(user, ['_id', 'name', 'email']));

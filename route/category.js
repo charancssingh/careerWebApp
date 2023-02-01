@@ -2,6 +2,8 @@ const express = require('express');
 
 const { Category, validateCategory } = require('../model/category');
 const validateObjectId = require('../middleware/validateObjectId');
+const auth = require('../middleware/auth');
+const admin = require('../middleware/admin');
 
 const router = express.Router();
 
@@ -16,7 +18,7 @@ router.get('/:id', validateObjectId, async(request, response) => {
     return response.send(category);
 });
 
-router.post('/', async(request, response) => {
+router.post('/', [auth, admin],async(request, response) => {
     const categoryRequest = request.body;
     await validateCategoryAndCheckEligiblity(categoryRequest, response);
     const category = new Category({name : categoryRequest.name });
@@ -24,7 +26,7 @@ router.post('/', async(request, response) => {
     return response.send(category);
 });
 
-router.put('/:id', validateObjectId, async(request, response) => {
+router.put('/:id', [validateObjectId, auth, admin], async(request, response) => {
     const categoryRequest = request.body;
     const objectId = request.params.id;
     const { error } = validateCategory(categoryRequest);
@@ -34,7 +36,7 @@ router.put('/:id', validateObjectId, async(request, response) => {
     return response.send(category);
 });
 
-router.delete('/:id', validateObjectId, async(request, response) => {
+router.delete('/:id', [validateObjectId, auth, admin], async(request, response) => {
     const objectId = request.params.id;
     const category = await Category.findByIdAndRemove(objectId);
     if (!category) return response.status(400).send(`Object Id: ${objectId} doesn't present in database.`)

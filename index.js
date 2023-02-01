@@ -1,9 +1,10 @@
 const express = require('express');
+const config = require('config');
+const constant = require('./constant/appConstant');
 
 const app =  express();
 
 require('./startup/mongoDb')();
 require('./startup/route')(app);
 
-const port = 3000;
-app.listen(port, () => console.log(`Connected to port ${port}`));
+app.listen(config.get(constant.PORT), () => console.log(`Connected to port ${constant.PORT}`));
