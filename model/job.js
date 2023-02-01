@@ -4,6 +4,7 @@ const joiObjectId = require('joi-objectid');
 joi.objectId= joiObjectId(joi);
 
 const constant = require('../constant/appConstant')
+const { categorySchema } = require('./category');
 
 const jobSchema = mongoose.Schema({
     title: {
@@ -24,7 +25,13 @@ const jobSchema = mongoose.Schema({
         required: true,
     },
     categoryTag: {
-        type: category
+        type: [categorySchema],
+        required: true
+    },
+    creationDate: {
+        type:Date,
+        required:true,
+        default:Date.now
     },
     logoUrl: {
         type: String,
@@ -45,16 +52,16 @@ const jobSchema = mongoose.Schema({
     salary : {
         type: String
     }
-}, { collection: constant.jobCollectionName });
+}, { collection: constant.JOB_COLLECTION_NAME });
 
-const Job = mongoose.model(constant.jobCollectionName, jobSchema);
+const Job = mongoose.model(constant.JOB_COLLECTION_NAME, jobSchema);
 
 const validateJob = job => {
     const schema = joi.object({
         title: joi.string().min(3).max(150).required(),
         companyName: joi.string().min(3).max(150).required(),
         applyLinkUrl: joi.string().min(3).required(),
-        categoryIds: joi.array().items(joi.objectId()),
+        categoryIds: joi.array().items(joi.objectId()).required(),
         logoUrl: joi.string().min(3),
         responsibility: joi.string().min(3),
         qualification: joi.string().min(3),
