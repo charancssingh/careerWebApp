@@ -1,6 +1,6 @@
 { 
     "jwtPrivateKey": "charan",
-    "db": "mongodb://localhost/vidly",
+    "connectionString": "mongodb+srv://Charan_singh:Charan%401@cluster0.m3brg5l.mongodb.net/user?retryWrites=true&w=majority",
     "port": 3900,
     "requiresAuth": true
 }

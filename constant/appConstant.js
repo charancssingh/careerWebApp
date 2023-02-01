@@ -1,7 +1,8 @@
 module.exports = {
     // table name
+    CONNECTION_STRING: 'connectionString',
     userCollectionName: 'User',
-    jobCollectionName: 'Job',
+    JOB_COLLECTION_NAME: 'Job',
     categoryCollectionName: 'Category',
 
     // config constants
